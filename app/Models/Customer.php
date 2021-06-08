@@ -15,6 +15,8 @@ class Customer extends Model
 
     protected $fillable = ['first_name', 'last_name', 'email'];
 
+    const MORPH_MAP_ALIAS = 'customer';
+
     public function phoneNumbers(): MorphMany
     {
         return $this->morphMany(PhoneNumber::class, 'resource');

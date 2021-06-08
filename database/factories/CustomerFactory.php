@@ -26,7 +26,7 @@ class CustomerFactory extends Factory
         return $this->afterCreating(function (Customer $customer) {
             PhoneNumber::factory()->count(2)->create([
                 'resource_id' => $customer->id,
-                'resource_type' => Customer::class,
+                'resource_type' => Customer::MORPH_MAP_ALIAS,
             ]);
         });
     }

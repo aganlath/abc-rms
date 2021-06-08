@@ -40,7 +40,7 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             PhoneNumber::factory()->count(2)->create([
                 'resource_id' => $user->id,
-                'resource_type' => User::class,
+                'resource_type' => User::MORPH_MAP_ALIAS,
             ]);
         });
     }

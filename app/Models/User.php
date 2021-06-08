@@ -32,6 +32,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    const MORPH_MAP_ALIAS = 'user';
+
     public function phoneNumbers(): MorphMany
     {
         return $this->morphMany(PhoneNumber::class, 'resource');
