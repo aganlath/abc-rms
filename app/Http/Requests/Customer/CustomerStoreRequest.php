@@ -7,7 +7,7 @@ namespace App\Http\Requests\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class CustomerStoreUpdateRequest extends FormRequest
+class CustomerStoreRequest extends FormRequest
 {
     public function authorize(): bool
     {

@@ -100,8 +100,22 @@ class CustomerControllerTest extends TestCase
             ->postJson(route('api.customers.store', array_merge($data, $relation)));
 
         $this->assertDatabaseHas('customers', $data);
-        $this->assertDatabaseHas('phone_numbers', ['phone_number' => '0774952178', 'resource_id' => $customer['data']['id'], 'resource_type' => Customer::class]);
-        $this->assertDatabaseHas('phone_numbers', ['phone_number' => '0232341424', 'resource_id' => $customer['data']['id'], 'resource_type' => Customer::class]);
+        $this->assertDatabaseHas('phone_numbers', ['phone_number' => '0774952178', 'resource_id' => $customer['data']['id'], 'resource_type' => 'customer']);
+        $this->assertDatabaseHas('phone_numbers', ['phone_number' => '0232341424', 'resource_id' => $customer['data']['id'], 'resource_type' => 'customer']);
+    }
+
+    public function test_validation_fails_when_data_not_provided(): void
+    {
+        $adminUser = User::factory()->admin()->create();
+
+        $response = $this->actingAs($adminUser)
+            ->postJson(route('api.customers.store', []))
+            ->assertStatus(422);
+
+        $this->assertEquals('The given data was invalid.', $response['message']);
+        $this->assertEquals('The first name field is required.', $response['errors']['first_name'][0]);
+        $this->assertEquals('The last name field is required.', $response['errors']['last_name'][0]);
+        $this->assertEquals('The email field is required.', $response['errors']['email'][0]);
     }
 
     public function test_can_update_customer(): void
@@ -109,11 +123,13 @@ class CustomerControllerTest extends TestCase
         $adminUser = User::factory()->admin()->create();
 
         $customer = Customer::factory()->create();
+        $phoneNumber = PhoneNumber::factory()->create();
+        $customer->phoneNumbers()->save($phoneNumber);
 
         $data = [
             'first_name' => 'Test',
             'last_name' => 'Customer',
-            'email' => 'customer@example.com',
+            'email' => $customer->email,
         ];
 
         $relation = ['phone_numbers' => ['0774952178']];
@@ -123,7 +139,8 @@ class CustomerControllerTest extends TestCase
             ->assertStatus(200);
 
         $this->assertDatabaseHas('customers', $data);
-        $this->assertDatabaseHas('phone_numbers', ['phone_number' => '0774952178', 'resource_id' => $customer->id, 'resource_type' => Customer::class]);
+        $this->assertDatabaseHas('phone_numbers', ['phone_number' => '0774952178', 'resource_id' => $customer->id, 'resource_type' => 'customer']);
+        $this->assertDatabaseMissing('phone_numbers', ['phone_number' => $phoneNumber->phone_number, 'resource_id' => $customer->id, 'resource_type' => 'customer']);
     }
 
     public function test_can_delete_customer(): void

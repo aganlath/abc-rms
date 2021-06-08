@@ -7,12 +7,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerDeleteRequest;
 use App\Http\Requests\Customer\CustomerIndexRequest;
-use App\Http\Requests\Customer\CustomerStoreUpdateRequest;
+use App\Http\Requests\Customer\CustomerStoreRequest;
+use App\Http\Requests\Customer\CustomerUpdateRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Models\PhoneNumber;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CustomerController extends Controller
@@ -20,6 +20,7 @@ class CustomerController extends Controller
     public function index(CustomerIndexRequest $request): AnonymousResourceCollection
     {
         $customers = Customer::query()
+            ->with(['phoneNumbers'])
             ->when($request->has('search'), function ($query) use ($request) {
                 $query->search($request->search);
             })
@@ -28,7 +29,7 @@ class CustomerController extends Controller
         return CustomerResource::collection($customers);
     }
 
-    public function store(CustomerStoreUpdateRequest $request): CustomerResource
+    public function store(CustomerStoreRequest $request): CustomerResource
     {
         $customer = Customer::create($request->only(['first_name', 'last_name', 'email']));
 
@@ -39,14 +40,16 @@ class CustomerController extends Controller
         return new CustomerResource($customer);
     }
 
-    public function update(Request $request, Customer $customer): CustomerResource
+    public function update(CustomerUpdateRequest $request, Customer $customer): CustomerResource
     {
         $customer->update($request->only(['first_name', 'last_name', 'email']));
 
         if ($request->has('phone_numbers')) {
-            $customer->phoneNumbers()->delete();
+            $toBeDeleted = $customer->phoneNumbers()->pluck('phone_number')->diff($request->get('phone_numbers'));
+            $toBeAdded = collect($request->get('phone_numbers'))->diff($customer->phoneNumbers()->pluck('phone_number'));
 
-            $this->attachPhoneNumbers($customer, $request->get('phone_numbers'));
+            $this->attachPhoneNumbers($customer, $toBeAdded->toArray());
+            $customer->phoneNumbers()->whereIn('phone_number', $toBeDeleted)->delete();
         }
 
         return new CustomerResource($customer);
