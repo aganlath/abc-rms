@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Traits\Search;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Search;
 
     protected $fillable = [
         'first_name',
@@ -38,5 +40,10 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return (bool)$this->is_admin;
+    }
+
+    public function scopeWithoutLoggedInUser($query)
+    {
+        return $query->where('id', '!=', Auth::user()->id);
     }
 }

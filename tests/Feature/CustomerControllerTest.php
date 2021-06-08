@@ -52,12 +52,32 @@ class CustomerControllerTest extends TestCase
     {
         $adminUser = User::factory()->admin()->create();
 
-        $customer = Customer::factory()->create(['first_name' => 'Test First Name',  'last_name' => 'Peter', 'email' => 'test@abc.com']);
-        $customer->phoneNumbers()->save(PhoneNumber::factory()->create(['phone_number' => '0779834535']));
+        $phoneNumber = PhoneNumber::factory()->create([
+            'phone_number' => '0779834535'
+        ]);
 
-        Customer::factory()->create(['first_name' => 'James', 'last_name' => 'John', 'email' => 'james@example.com']);
-        Customer::factory()->create(['first_name' => 'Ashani', 'last_name' => 'Ganlath', 'email' => 'hilari@abc.com']);
-        Customer::factory()->create(['first_name' => 'Test', 'last_name' => 'Live', 'email' => 'first@example.com']);
+        $customer = Customer::factory()->create([
+            'first_name' => 'Test First Name',
+            'last_name' => 'Peter',
+            'email' => 'test@abc.com'
+        ]);
+        $customer->phoneNumbers()->save($phoneNumber);
+
+        Customer::factory()->create([
+            'first_name' => 'James',
+            'last_name' => 'John', 'email' =>
+                'james@example.com'
+        ]);
+        Customer::factory()->create([
+            'first_name' => 'Ashani',
+            'last_name' => 'Ganlath',
+            'email' => 'hilari@abc.com'
+        ]);
+        Customer::factory()->create([
+            'first_name' => 'Test',
+            'last_name' => 'Live',
+            'email' => 'first@example.com'
+        ]);
 
         $search1 = $this->actingAs($adminUser)
             ->getJson(route('api.customers.index') . '?search=first')
