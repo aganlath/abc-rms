@@ -68,4 +68,17 @@ class UserTest extends TestCase
         $this->assertCount(10, $users);
         $this->assertNotContains($adminUser, $users);
     }
+
+    public function test_can_find_user_with_email(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'abc@test.com'
+        ]);
+
+        $fetchedUser = (new User())->fetchUserByEmail($user->email);
+
+        $this->assertEquals($fetchedUser->first_name, $user->first_name);
+        $this->assertEquals($fetchedUser->last_name, $user->last_name);
+        $this->assertEquals($fetchedUser->email, $user->email);
+    }
 }

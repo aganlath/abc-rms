@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::name('api.')
     ->namespace('Api')
     ->group(function () {
-        Route::apiResource('customers', 'CustomerController')->except('show');
-        Route::apiResource('users', 'UserController')->except('show');
+        Route::post('login', 'LoginController')->name('login');
+
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::apiResource('customers', 'CustomerController')->except('show');
+            Route::apiResource('users', 'UserController')->except('show');
+        });
     });
 
 /*Route::middleware('auth:api')->get('/user', function (Request $request) {
