@@ -20,6 +20,7 @@ class UserController extends Controller
             ->when($request->has('search'), function ($query) use ($request) {
                 $query->search($request->search);
             })
+            ->orderBy('first_name')
             ->paginate($request->get('limit', 10));
 
         return UserResource::collection($customers);

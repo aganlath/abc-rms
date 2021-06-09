@@ -8,8 +8,7 @@ export const fetchCustomers = async ({state, commit}) => {
 
             commit('setCustomers', customers);
             commit('setCustomersPage', meta.current_page);
-            commit('setCustomersLastPage', meta.last_page);
-            return commit('setCustomersLoading', false);
+            return commit('setCustomersLastPage', meta.last_page);
         })
         .catch(error => {
             throw error.response;
