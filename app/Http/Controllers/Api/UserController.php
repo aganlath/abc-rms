@@ -20,7 +20,7 @@ class UserController extends Controller
             ->when($request->has('search'), function ($query) use ($request) {
                 $query->search($request->search);
             })
-            ->simplePaginate($request->get('limit', 10));
+            ->paginate($request->get('limit', 10));
 
         return UserResource::collection($customers);
     }

@@ -24,7 +24,8 @@ class CustomerController extends Controller
             ->when($request->has('search'), function ($query) use ($request) {
                 $query->search($request->search);
             })
-            ->simplePaginate($request->get('limit', 10));
+            ->orderBy('first_name')
+            ->paginate($request->get('limit', 10));
 
         return CustomerResource::collection($customers);
     }
@@ -33,7 +34,7 @@ class CustomerController extends Controller
     {
         $customer = Customer::create($request->only(['first_name', 'last_name', 'email']));
 
-        if ($request->has('phone_numbers')) {
+        if ($request->filled('phone_numbers')) {
             $this->attachPhoneNumbers($customer, $request->get('phone_numbers'));
         }
 
