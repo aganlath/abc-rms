@@ -206,6 +206,22 @@ var render = function() {
             }
           }),
           _vm._v(" "),
+          _c("el-table-column", {
+            attrs: { prop: "is_admin", label: "Admin", align: "center" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(scope) {
+                  return [
+                    scope.row.is_admin
+                      ? _c("i", { staticClass: "el-icon-success" })
+                      : _c("i", { staticClass: "el-icon-error" })
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
           _c(
             "infinite-loading",
             {

@@ -62,6 +62,15 @@ export default {
                 :formatter="formatNumbers"
                 label="Phone numbers">
             </el-table-column>
+            <el-table-column
+                prop="is_admin"
+                label="Admin"
+                align="center">
+                <template slot-scope="scope">
+                    <i v-if="scope.row.is_admin" class="el-icon-success"></i>
+                    <i v-else class="el-icon-error"></i>
+                </template>
+            </el-table-column>
 
             <infinite-loading
                 slot="append"
