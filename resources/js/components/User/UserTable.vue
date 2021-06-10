@@ -1,5 +1,6 @@
 <script>
 import {mapActions, mapState} from "vuex";
+import {createCommaSeparatedList} from "../../config/helpers";
 
 export default {
     name: "UserTable",
@@ -15,11 +16,8 @@ export default {
         ...mapActions({
             fetchUsers: 'users/fetchUsers',
         }),
-        formatValue(value) {
-            return (_.map(value, 'phone_number')).join(', ');
-        },
         formatNumbers(row, column, cellValue) {
-            return this.formatValue(cellValue);
+            return createCommaSeparatedList(cellValue, 'phone_number');
         },
         async loadUsers($state) {
             await this.fetchUsers()
@@ -61,6 +59,15 @@ export default {
                 prop="phone_numbers"
                 :formatter="formatNumbers"
                 label="Phone numbers">
+            </el-table-column>
+            <el-table-column
+                prop="is_admin"
+                label="Admin"
+                align="center">
+                <template slot-scope="scope">
+                    <i v-if="scope.row.is_admin" class="el-icon-success"></i>
+                    <i v-else class="el-icon-error"></i>
+                </template>
             </el-table-column>
 
             <infinite-loading

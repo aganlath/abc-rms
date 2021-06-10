@@ -1,6 +1,6 @@
-## About Abc RMS
+##ABC - Relationship management system
 
-Abc RMS is an admin panel to maintain customers and users. Features are as follows
+ABC RMS is an admin panel to maintain customers and users. Features are as follows
 
 - Customers - Create, update, delete and search customers
 - Users - Create and update via CVS, search users
@@ -10,7 +10,7 @@ Abc RMS is an admin panel to maintain customers and users. Features are as follo
 
 - Vue framework - frontend
     - Tailwindcss - styling the frontend
-    - Element ui - for html element
+    - Element ui - for html elements
     - Vuex - for state management
     - Vue router - for frontend routes
     - Vue infinite loading -  infinite loading in tables  

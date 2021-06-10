@@ -3546,8 +3546,8 @@ var MainHeader = function MainHeader() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! element-ui */ "./node_modules/element-ui/lib/element-ui.common.js");
 /* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(element_ui__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _css_abc_theme_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../css/abc-theme/index.css */ "./resources/css/abc-theme/index.css");
@@ -3557,6 +3557,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router/index */ "./resources/js/router/index.js");
 /* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+/* harmony import */ var _config_helpers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./config/helpers */ "./resources/js/config/helpers.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -3567,10 +3568,13 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_7__.default);
-vue__WEBPACK_IMPORTED_MODULE_6__.default.use((element_ui__WEBPACK_IMPORTED_MODULE_0___default()));
-vue__WEBPACK_IMPORTED_MODULE_6__.default.use((vue_infinite_loading__WEBPACK_IMPORTED_MODULE_2___default()));
-new vue__WEBPACK_IMPORTED_MODULE_6__.default({
+
+vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_8__.default);
+vue__WEBPACK_IMPORTED_MODULE_7__.default.use((element_ui__WEBPACK_IMPORTED_MODULE_0___default()));
+vue__WEBPACK_IMPORTED_MODULE_7__.default.use((vue_infinite_loading__WEBPACK_IMPORTED_MODULE_2___default()));
+vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$showErrorMessage = _config_helpers__WEBPACK_IMPORTED_MODULE_6__.showErrorMessage;
+vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$showSuccessMessage = _config_helpers__WEBPACK_IMPORTED_MODULE_6__.showSuccessMessage;
+new vue__WEBPACK_IMPORTED_MODULE_7__.default({
   router: _router_index__WEBPACK_IMPORTED_MODULE_3__.default,
   store: _store_index__WEBPACK_IMPORTED_MODULE_4__.default,
   created: function created() {
@@ -3629,6 +3633,75 @@ window.axios.defaults.withCredentials = true;
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/config/helpers.js":
+/*!****************************************!*\
+  !*** ./resources/js/config/helpers.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createCommaSeparatedList": () => (/* binding */ createCommaSeparatedList),
+/* harmony export */   "showErrorMessage": () => (/* binding */ showErrorMessage),
+/* harmony export */   "showSuccessMessage": () => (/* binding */ showSuccessMessage)
+/* harmony export */ });
+/* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! element-ui */ "./node_modules/element-ui/lib/element-ui.common.js");
+/* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(element_ui__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./messages */ "./resources/js/config/messages.js");
+
+
+var createCommaSeparatedList = function createCommaSeparatedList(array, propertyName) {
+  return _.map(array, propertyName).join(', ');
+};
+var showErrorMessage = function showErrorMessage(path) {
+  element_ui__WEBPACK_IMPORTED_MODULE_0__.Message.error(getNotification(path));
+};
+var showSuccessMessage = function showSuccessMessage(path) {
+  element_ui__WEBPACK_IMPORTED_MODULE_0__.Message.success(getNotification(path));
+};
+
+var getNotification = function getNotification(notification) {
+  return _.get(_messages__WEBPACK_IMPORTED_MODULE_1__.default, notification);
+};
+
+/***/ }),
+
+/***/ "./resources/js/config/messages.js":
+/*!*****************************************!*\
+  !*** ./resources/js/config/messages.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  customer: {
+    create: {
+      success: 'Customer saved successfully',
+      error: 'Customer was not saved'
+    },
+    update: {
+      success: 'Customer updated successfully',
+      error: 'Customer was not updated'
+    },
+    "delete": {
+      confirm: 'Are you sure you want to delete the customer?',
+      error: 'Customer was not deleted',
+      success: 'Customer deleted successfully'
+    },
+    save: {
+      title: 'Accounts added',
+      message: 'Selected accounts added to :company_group_name.'
+    }
+  }
+});
 
 /***/ }),
 
@@ -4200,7 +4273,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "resetCustomersLastPage": () => (/* binding */ resetCustomersLastPage)
 /* harmony export */ });
 var setCustomers = function setCustomers(state, customers) {
-  return state.customers = state.customers.concat(customers);
+  return state.customers = _.uniqBy(state.customers.concat(customers), 'id');
 };
 var setCustomersNextPage = function setCustomersNextPage(state, page) {
   return state.nextPage = page;
@@ -4408,7 +4481,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "resetUsersLastPage": () => (/* binding */ resetUsersLastPage)
 /* harmony export */ });
 var setUsers = function setUsers(state, users) {
-  return state.users = state.users.concat(users);
+  return state.users = _.uniqBy(state.users.concat(users), 'id');
 };
 var setUsersNextPage = function setUsersNextPage(state, page) {
   return state.nextPage = page;

@@ -13,7 +13,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _config_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config/helpers */ "./resources/js/config/helpers.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -27,9 +28,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UserTable",
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
     users: function users(state) {
       return state.users.users;
     },
@@ -43,14 +45,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.users.searchKey;
     }
   })),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)({
     fetchUsers: 'users/fetchUsers'
   })), {}, {
-    formatValue: function formatValue(value) {
-      return _.map(value, 'phone_number').join(', ');
-    },
     formatNumbers: function formatNumbers(row, column, cellValue) {
-      return this.formatValue(cellValue);
+      return (0,_config_helpers__WEBPACK_IMPORTED_MODULE_1__.createCommaSeparatedList)(cellValue, 'phone_number');
     },
     loadUsers: function loadUsers($state) {
       var _this = this;
@@ -204,6 +203,22 @@ var render = function() {
               formatter: _vm.formatNumbers,
               label: "Phone numbers"
             }
+          }),
+          _vm._v(" "),
+          _c("el-table-column", {
+            attrs: { prop: "is_admin", label: "Admin", align: "center" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(scope) {
+                  return [
+                    scope.row.is_admin
+                      ? _c("i", { staticClass: "el-icon-success" })
+                      : _c("i", { staticClass: "el-icon-error" })
+                  ]
+                }
+              }
+            ])
           }),
           _vm._v(" "),
           _c(

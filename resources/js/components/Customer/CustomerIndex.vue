@@ -32,17 +32,9 @@ export default {
                 .then(() => {
                     this.customerFormVisible = false;
 
-                    this.$message({
-                        type: 'success',
-                        message: 'Customer saved successfully'
-                    });
+                    this.$showSuccessMessage('customer.create.success');
                 })
-                .catch(() => {
-                    this.$message({
-                        type: 'error',
-                        message: 'Customer was not saved'
-                    });
-                })
+                .catch(() => this.$showErrorMessage('customer.create.error'));
         }
     }
 }

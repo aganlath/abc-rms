@@ -79,15 +79,9 @@ var Search = function Search() {
                 return _this.addCustomer(customer).then(function () {
                   _this.customerFormVisible = false;
 
-                  _this.$message({
-                    type: 'success',
-                    message: 'Customer saved successfully'
-                  });
+                  _this.$showSuccessMessage('customer.create.success');
                 })["catch"](function () {
-                  _this.$message({
-                    type: 'error',
-                    message: 'Customer was not saved'
-                  });
+                  return _this.$showErrorMessage('customer.create.error');
                 });
 
               case 2:

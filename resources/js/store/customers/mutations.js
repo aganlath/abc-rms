@@ -1,4 +1,4 @@
-export const setCustomers = (state, customers) => state.customers = state.customers.concat(customers);
+export const setCustomers = (state, customers) => state.customers = _.uniqBy(state.customers.concat(customers), 'id');
 
 export const setCustomersNextPage = (state, page) => state.nextPage = page;
 

@@ -5,14 +5,17 @@ import VueRouter from "vue-router";
 import ElementUI from 'element-ui';
 import "./../css/abc-theme/index.css";
 import InfiniteLoading from 'vue-infinite-loading';
-
 import router from './router/index';
 import store from './store/index';
 import App from './App.vue';
+import { showErrorMessage, showSuccessMessage } from './config/helpers';
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(InfiniteLoading);
+
+Vue.prototype.$showErrorMessage = showErrorMessage;
+Vue.prototype.$showSuccessMessage = showSuccessMessage;
 
 new Vue({
     router,
