@@ -1,6 +1,6 @@
 export const setUsers = (state, users) => state.users = state.users.concat(users);
 
-export const setUsersPage = (state, page) => state.page = page + 1;
+export const setUsersNextPage = (state, page) => state.nextPage = page;
 
 export const setUsersLastPage = (state, page) => state.lastPage = page;
 
@@ -8,6 +8,6 @@ export const setUsersSearchKey = (state, searchKey) => state.searchKey = searchK
 
 export const resetUsers = (state) => state.users = [];
 
-export const resetUsersPage = (state) => state.page = 1;
+export const resetUsersNextPage = (state) => state.nextPage = 1;
 
 export const resetUsersLastPage = (state) => state.lastPage = null;

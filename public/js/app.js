@@ -4017,11 +4017,11 @@ var fetchCustomers = /*#__PURE__*/function () {
           case 0:
             state = _ref.state, commit = _ref.commit;
             _context.next = 3;
-            return _services_CustomerService__WEBPACK_IMPORTED_MODULE_1__.default.index(state.page, state.limit, state.searchKey).then(function (response) {
+            return _services_CustomerService__WEBPACK_IMPORTED_MODULE_1__.default.index(state.nextPage, state.limit, state.searchKey).then(function (response) {
               var meta = response.data.meta;
               var customers = response.data.data;
               commit('setCustomers', customers);
-              commit('setCustomersPage', meta.current_page);
+              commit('setCustomersNextPage', meta.current_page + 1);
               return commit('setCustomersLastPage', meta.last_page);
             })["catch"](function (error) {
               throw error.response;
@@ -4066,7 +4066,7 @@ var searchCustomers = /*#__PURE__*/function () {
 var resetAll = function resetAll(_ref5) {
   var commit = _ref5.commit;
   commit('resetCustomers');
-  commit('resetCustomersPage');
+  commit('resetCustomersNextPage');
   commit('resetCustomersLastPage');
 };
 var addCustomer = /*#__PURE__*/function () {
@@ -4191,18 +4191,18 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "setCustomers": () => (/* binding */ setCustomers),
-/* harmony export */   "setCustomersPage": () => (/* binding */ setCustomersPage),
+/* harmony export */   "setCustomersNextPage": () => (/* binding */ setCustomersNextPage),
 /* harmony export */   "setCustomersLastPage": () => (/* binding */ setCustomersLastPage),
 /* harmony export */   "setCustomersSearchKey": () => (/* binding */ setCustomersSearchKey),
 /* harmony export */   "resetCustomers": () => (/* binding */ resetCustomers),
-/* harmony export */   "resetCustomersPage": () => (/* binding */ resetCustomersPage),
+/* harmony export */   "resetCustomersNextPage": () => (/* binding */ resetCustomersNextPage),
 /* harmony export */   "resetCustomersLastPage": () => (/* binding */ resetCustomersLastPage)
 /* harmony export */ });
 var setCustomers = function setCustomers(state, customers) {
   return state.customers = state.customers.concat(customers);
 };
-var setCustomersPage = function setCustomersPage(state, page) {
-  return state.page = page + 1;
+var setCustomersNextPage = function setCustomersNextPage(state, page) {
+  return state.nextPage = page;
 };
 var setCustomersLastPage = function setCustomersLastPage(state, page) {
   return state.lastPage = page;
@@ -4213,8 +4213,8 @@ var setCustomersSearchKey = function setCustomersSearchKey(state, searchKey) {
 var resetCustomers = function resetCustomers(state) {
   return state.customers = [];
 };
-var resetCustomersPage = function resetCustomersPage(state) {
-  return state.page = 1;
+var resetCustomersNextPage = function resetCustomersNextPage(state) {
+  return state.nextPage = 1;
 };
 var resetCustomersLastPage = function resetCustomersLastPage(state) {
   return state.lastPage = null;
@@ -4237,7 +4237,7 @@ __webpack_require__.r(__webpack_exports__);
   customers: [],
   lastPage: null,
   limit: 12,
-  page: 1,
+  nextPage: 1,
   searchKey: null
 });
 
@@ -4308,11 +4308,11 @@ var fetchUsers = /*#__PURE__*/function () {
           case 0:
             state = _ref.state, commit = _ref.commit;
             _context.next = 3;
-            return _services_UserService__WEBPACK_IMPORTED_MODULE_1__.default.index(state.page, state.limit, state.searchKey).then(function (response) {
+            return _services_UserService__WEBPACK_IMPORTED_MODULE_1__.default.index(state.nextPage, state.limit, state.searchKey).then(function (response) {
               var meta = response.data.meta;
               var users = response.data.data;
               commit('setUsers', users);
-              commit('setUsersPage', meta.current_page);
+              commit('setUsersNextPage', meta.current_page + 1);
               return commit('setUsersLastPage', meta.last_page);
             })["catch"](function (error) {
               throw error.response;
@@ -4357,7 +4357,7 @@ var searchUsers = /*#__PURE__*/function () {
 var resetAll = function resetAll(_ref5) {
   var commit = _ref5.commit;
   commit('resetUsers');
-  commit('resetUsersPage');
+  commit('resetUsersNextPage');
   commit('resetUsersLastPage');
 };
 
@@ -4399,18 +4399,18 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "setUsers": () => (/* binding */ setUsers),
-/* harmony export */   "setUsersPage": () => (/* binding */ setUsersPage),
+/* harmony export */   "setUsersNextPage": () => (/* binding */ setUsersNextPage),
 /* harmony export */   "setUsersLastPage": () => (/* binding */ setUsersLastPage),
 /* harmony export */   "setUsersSearchKey": () => (/* binding */ setUsersSearchKey),
 /* harmony export */   "resetUsers": () => (/* binding */ resetUsers),
-/* harmony export */   "resetUsersPage": () => (/* binding */ resetUsersPage),
+/* harmony export */   "resetUsersNextPage": () => (/* binding */ resetUsersNextPage),
 /* harmony export */   "resetUsersLastPage": () => (/* binding */ resetUsersLastPage)
 /* harmony export */ });
 var setUsers = function setUsers(state, users) {
   return state.users = state.users.concat(users);
 };
-var setUsersPage = function setUsersPage(state, page) {
-  return state.page = page + 1;
+var setUsersNextPage = function setUsersNextPage(state, page) {
+  return state.nextPage = page;
 };
 var setUsersLastPage = function setUsersLastPage(state, page) {
   return state.lastPage = page;
@@ -4421,8 +4421,8 @@ var setUsersSearchKey = function setUsersSearchKey(state, searchKey) {
 var resetUsers = function resetUsers(state) {
   return state.users = [];
 };
-var resetUsersPage = function resetUsersPage(state) {
-  return state.page = 1;
+var resetUsersNextPage = function resetUsersNextPage(state) {
+  return state.nextPage = 1;
 };
 var resetUsersLastPage = function resetUsersLastPage(state) {
   return state.lastPage = null;
@@ -4445,7 +4445,7 @@ __webpack_require__.r(__webpack_exports__);
   users: [],
   lastPage: null,
   limit: 12,
-  page: 1,
+  nextPage: 1,
   searchKey: null
 });
 

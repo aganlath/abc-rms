@@ -33,11 +33,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     users: function users(state) {
       return state.users.users;
     },
-    currentPage: function currentPage(state) {
-      return state.users.page;
+    nextPage: function nextPage(state) {
+      return state.users.nextPage;
     },
     lastPage: function lastPage(state) {
       return state.users.lastPage;
+    },
+    searchKey: function searchKey(state) {
+      return state.users.searchKey;
     }
   })),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
@@ -49,7 +52,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     formatNumbers: function formatNumbers(row, column, cellValue) {
       return this.formatValue(cellValue);
     },
-    loadCustomers: function loadCustomers($state) {
+    loadUsers: function loadUsers($state) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -59,7 +62,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 0:
                 _context.next = 2;
                 return _this.fetchUsers().then(function () {
-                  if (_this.currentPage > _this.lastPage) {
+                  if (_this.nextPage > _this.lastPage) {
                     $state.complete();
                   } else {
                     $state.loaded();
@@ -177,7 +180,7 @@ var render = function() {
         "el-table",
         {
           attrs: {
-            "empty-text": "No customers",
+            "empty-text": "No users",
             size: "mini",
             stripe: true,
             data: _vm.users,
@@ -203,14 +206,24 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("infinite-loading", {
-            attrs: {
-              slot: "append",
-              "force-use-infinite-wrapper": ".el-table__body-wrapper"
+          _c(
+            "infinite-loading",
+            {
+              attrs: {
+                slot: "append",
+                identifier: _vm.searchKey,
+                spinner: "circles",
+                "force-use-infinite-wrapper": ".el-table__body-wrapper"
+              },
+              on: { infinite: _vm.loadUsers },
+              slot: "append"
             },
-            on: { infinite: _vm.loadCustomers },
-            slot: "append"
-          })
+            [
+              _c("div", { attrs: { slot: "no-more" }, slot: "no-more" }),
+              _vm._v(" "),
+              _c("div", { attrs: { slot: "no-results" }, slot: "no-results" })
+            ]
+          )
         ],
         1
       )

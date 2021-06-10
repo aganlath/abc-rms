@@ -11,15 +11,19 @@ export default {
     data() {
         return {
             customer: {},
-            customerFormVisible: false
+            customerFormVisible: false,
         }
     },
     computed: {
         ...mapState({
             customers: state => state.customers.customers,
-            currentPage: state => state.customers.page,
+            nextPage: state => state.customers.nextPage,
             lastPage: state => state.customers.lastPage,
-        })
+            searchKey: state => state.customers.searchKey,
+        }),
+        isSearchActive() {
+            return !!this.searchKey;
+        }
     },
     methods: {
         ...mapActions({
@@ -36,7 +40,7 @@ export default {
         async loadCustomers($state) {
             await this.fetchCustomers()
                 .then(() => {
-                    if (this.currentPage > this.lastPage) {
+                    if (this.nextPage > this.lastPage) {
                         $state.complete();
                     } else {
                         $state.loaded();
@@ -145,7 +149,11 @@ export default {
             <infinite-loading
                 slot="append"
                 @infinite="loadCustomers"
+                :identifier="isSearchActive"
+                spinner="circles"
                 force-use-infinite-wrapper=".el-table__body-wrapper">
+                <div slot="no-more"></div>
+                <div slot="no-results"></div>
             </infinite-loading>
         </el-table>
 

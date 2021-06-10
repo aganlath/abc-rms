@@ -1,13 +1,13 @@
 import UserService from "../../services/UserService";
 
 export const fetchUsers = async ({state, commit}) => {
-    await UserService.index(state.page, state.limit, state.searchKey)
+    await UserService.index(state.nextPage, state.limit, state.searchKey)
         .then(response => {
             const { data : { meta: meta } } = response;
             const { data : { data: users } } = response;
 
             commit('setUsers', users);
-            commit('setUsersPage', meta.current_page);
+            commit('setUsersNextPage', meta.current_page + 1);
             return commit('setUsersLastPage', meta.last_page);
         })
         .catch(error => {
@@ -24,6 +24,6 @@ export const searchUsers = async ({commit, dispatch}, searchKey) => {
 
 export const resetAll = ({commit}) => {
     commit('resetUsers');
-    commit('resetUsersPage');
+    commit('resetUsersNextPage');
     commit('resetUsersLastPage');
 }

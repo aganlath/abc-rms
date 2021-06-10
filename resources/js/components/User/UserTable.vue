@@ -6,8 +6,9 @@ export default {
     computed: {
         ...mapState({
             users: state => state.users.users,
-            currentPage: state => state.users.page,
+            nextPage: state => state.users.nextPage,
             lastPage: state => state.users.lastPage,
+            searchKey: state => state.users.searchKey,
         })
     },
     methods: {
@@ -20,10 +21,10 @@ export default {
         formatNumbers(row, column, cellValue) {
             return this.formatValue(cellValue);
         },
-        async loadCustomers($state) {
+        async loadUsers($state) {
             await this.fetchUsers()
                 .then(() => {
-                    if (this.currentPage > this.lastPage) {
+                    if (this.nextPage > this.lastPage) {
                         $state.complete();
                     } else {
                         $state.loaded();
@@ -38,7 +39,7 @@ export default {
 <template>
     <el-card class="box-card mt-10">
         <el-table
-            empty-text="No customers"
+            empty-text="No users"
             size="mini"
             :stripe="true"
             :data="users"
@@ -64,8 +65,12 @@ export default {
 
             <infinite-loading
                 slot="append"
-                @infinite="loadCustomers"
+                @infinite="loadUsers"
+                :identifier="searchKey"
+                spinner="circles"
                 force-use-infinite-wrapper=".el-table__body-wrapper">
+                <div slot="no-more"></div>
+                <div slot="no-results"></div>
             </infinite-loading>
         </el-table>
     </el-card>
