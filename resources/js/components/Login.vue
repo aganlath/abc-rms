@@ -41,6 +41,9 @@ export default {
                     this.login(this.loginForm)
                         .then(() => {
                            this.$router.push({ name: 'customers' });
+                        })
+                        .catch(() => {
+                            //skip
                         });
                 }
             });

@@ -3892,7 +3892,8 @@ var login = /*#__PURE__*/function () {
               return commit('setAuthUser', data);
             })["catch"](function (error) {
               var errors = Object.values(error.response.data.errors);
-              return commit('setValidationError', errors[0][0]);
+              commit('setValidationError', errors[0][0]);
+              throw error.response.status;
             });
 
           case 3:

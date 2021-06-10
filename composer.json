@@ -12,7 +12,8 @@
         "laravel/framework": "^8.40",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "league/csv": "^9.0"
+        "league/csv": "^9.0",
+        "nextapps/laravel-swagger-ui": "^0.2.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

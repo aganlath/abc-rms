@@ -12,14 +12,24 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        //save admin user
+        //admin user
         User::factory()->create([
-            'first_name' => 'Ashani',
-            'last_name' => 'Ganlath',
-            'email' => 'ashani@abc.com',
+            'first_name' => 'Admin',
+            'last_name' => 'abc',
+            'email' => 'admin@abc.com',
             'email_verified_at' => now(),
             'is_admin' => 1,
-            'password' => Hash::make(config('auth.default_password')), // password
+            'password' => Hash::make(config('auth.default_password')), // secret
+        ]);
+
+        //non admin user
+        User::factory()->create([
+            'first_name' => 'user',
+            'last_name' => 'abc',
+            'email' => 'user@abc.com',
+            'email_verified_at' => now(),
+            'is_admin' => 0,
+            'password' => Hash::make(config('auth.default_password')), // secret
         ]);
 
         User::factory()

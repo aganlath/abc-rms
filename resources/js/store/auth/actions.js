@@ -7,8 +7,9 @@ export const login = async ({commit}, credentials) => {
         })
         .catch(error => {
             const errors = Object.values(error.response.data.errors);
+            commit('setValidationError', errors[0][0]);
 
-            return commit('setValidationError', errors[0][0])
+            throw error.response.status;
         });
 };
 

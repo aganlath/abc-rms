@@ -71,6 +71,7 @@ var PageTitle = function PageTitle() {
             _this.$router.push({
               name: 'customers'
             });
+          })["catch"](function () {//skip
           });
         }
       });
