@@ -108,7 +108,7 @@
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/CollectionResponse"
+              "$ref": "#/definitions/CustomerCollectionResponse"
             }
           },
           "404": {
@@ -273,7 +273,7 @@
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/CollectionResponse"
+              "$ref": "#/definitions/UserCollectionResponse"
             }
           },
           "404": {
@@ -392,7 +392,7 @@
         }
       }
     },
-    "CollectionResponse": {
+    "CustomerCollectionResponse": {
       "type": "object",
       "properties": {
         "data": {
@@ -441,6 +441,59 @@
           }
         }
       }
-    }
+    },
+    "UserCollectionResponse": {
+          "type": "object",
+          "properties": {
+              "data": {
+                  "type": "array",
+                  "items": {
+                      "type": "object",
+                      "properties": {
+                          "id": {
+                              "type": "integer"
+                          },
+                          "first_name": {
+                              "type": "string"
+                          },
+                          "last_name": {
+                              "type": "string"
+                          },
+                          "email": {
+                              "type": "string"
+                          },
+                          "phone_numbers": {
+                              "type": "array",
+                              "items": {
+                                  "type": "object",
+                                  "properties": {
+                                      "phone_number": {
+                                          "type": "string"
+                                      }
+                                  }
+                              }
+                          },
+                          "is_admin": {
+                              "type": "boolean"
+                          }
+                      }
+                  }
+              },
+              "meta": {
+                  "type": "object",
+                  "properties": {
+                      "current_page": {
+                          "type": "integer"
+                      },
+                      "last_page": {
+                          "type": "integer"
+                      },
+                      "total": {
+                          "type": "integer"
+                      }
+                  }
+              }
+          }
+      }
   }
 }
