@@ -1,5 +1,6 @@
 <script>
 import {mapActions, mapState} from "vuex";
+import {createCommaSeparatedList} from "../../config/helpers";
 
 export default {
     name: "UserTable",
@@ -15,11 +16,8 @@ export default {
         ...mapActions({
             fetchUsers: 'users/fetchUsers',
         }),
-        formatValue(value) {
-            return (_.map(value, 'phone_number')).join(', ');
-        },
         formatNumbers(row, column, cellValue) {
-            return this.formatValue(cellValue);
+            return createCommaSeparatedList(cellValue, 'phone_number');
         },
         async loadUsers($state) {
             await this.fetchUsers()

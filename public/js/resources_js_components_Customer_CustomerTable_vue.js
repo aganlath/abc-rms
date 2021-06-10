@@ -13,7 +13,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _config_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config/helpers */ "./resources/js/config/helpers.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -25,6 +26,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -43,7 +45,7 @@ var CustomerForm = function CustomerForm() {
       customerFormVisible: false
     };
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
     customers: function customers(state) {
       return state.customers.customers;
     },
@@ -61,16 +63,13 @@ var CustomerForm = function CustomerForm() {
       return !!this.searchKey;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)({
     deleteCustomer: 'customers/deleteCustomer',
     editCustomer: 'customers/editCustomer',
     fetchCustomers: 'customers/fetchCustomers'
   })), {}, {
-    formatValue: function formatValue(value) {
-      return _.map(value, 'phone_number').join(', ');
-    },
     formatNumbers: function formatNumbers(row, column, cellValue) {
-      return this.formatValue(cellValue);
+      return (0,_config_helpers__WEBPACK_IMPORTED_MODULE_1__.createCommaSeparatedList)(cellValue, 'phone_number');
     },
     loadCustomers: function loadCustomers($state) {
       var _this = this;
@@ -101,7 +100,7 @@ var CustomerForm = function CustomerForm() {
     },
     edit: function edit(customer) {
       this.customer = _.cloneDeep(customer);
-      this.customer.phone_numbers = customer.phone_numbers ? this.formatValue(customer.phone_numbers) : '';
+      this.customer.phone_numbers = customer.phone_numbers ? (0,_config_helpers__WEBPACK_IMPORTED_MODULE_1__.createCommaSeparatedList)(customer.phone_numbers, 'phone_number') : '';
       this.customerFormVisible = true;
     },
     removeCustomer: function removeCustomer(customerId) {
@@ -118,15 +117,9 @@ var CustomerForm = function CustomerForm() {
                   type: 'warning'
                 }).then(function () {
                   _this2.deleteCustomer(customerId).then(function () {
-                    _this2.$message({
-                      type: 'success',
-                      message: 'Customer deleted successfully'
-                    });
+                    return _this2.$showSuccessMessage('customer.delete.success');
                   })["catch"](function () {
-                    _this2.$message({
-                      type: 'error',
-                      message: 'Customer was not deleted'
-                    });
+                    return _this2.$showErrorMessage('customer.delete.error');
                   });
                 })["catch"](function () {//skip
                 });
@@ -151,15 +144,9 @@ var CustomerForm = function CustomerForm() {
                 return _this3.editCustomer(customer).then(function () {
                   _this3.customerFormVisible = false;
 
-                  _this3.$message({
-                    type: 'success',
-                    message: 'Customer updated successfully'
-                  });
+                  _this3.$showSuccessMessage('customer.update.success');
                 })["catch"](function () {
-                  _this3.$message({
-                    type: 'error',
-                    message: 'Customer was not updated'
-                  });
+                  return _this3.$showErrorMessage('customer.update.error');
                 });
 
               case 2:

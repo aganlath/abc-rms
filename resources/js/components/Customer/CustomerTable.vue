@@ -1,5 +1,6 @@
 <script>
 import {mapActions, mapState} from "vuex";
+import {createCommaSeparatedList} from "../../config/helpers";
 
 const CustomerForm = () => import('./CustomerForm');
 
@@ -31,11 +32,8 @@ export default {
             editCustomer: 'customers/editCustomer',
             fetchCustomers: 'customers/fetchCustomers',
         }),
-        formatValue(value) {
-            return (_.map(value, 'phone_number')).join(', ');
-        },
         formatNumbers(row, column, cellValue) {
-            return this.formatValue(cellValue);
+            return createCommaSeparatedList(cellValue, 'phone_number');
         },
         async loadCustomers($state) {
             await this.fetchCustomers()
@@ -50,7 +48,9 @@ export default {
         },
         edit(customer) {
             this.customer = _.cloneDeep(customer);
-            this.customer.phone_numbers = customer.phone_numbers ? this.formatValue(customer.phone_numbers) : '';
+            this.customer.phone_numbers = customer.phone_numbers
+                ? createCommaSeparatedList(customer.phone_numbers, 'phone_number')
+                : '';
 
             this.customerFormVisible = true
         },
@@ -61,18 +61,8 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.deleteCustomer(customerId)
-                    .then(() => {
-                        this.$message({
-                            type: 'success',
-                            message: 'Customer deleted successfully'
-                        });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: 'error',
-                            message: 'Customer was not deleted'
-                        });
-                    })
+                    .then(() => this.$showSuccessMessage('customer.delete.success'))
+                    .catch(() => this.$showErrorMessage('customer.delete.error'))
             }).catch(() => {
                 //skip
             });
@@ -81,18 +71,9 @@ export default {
             await this.editCustomer(customer)
                 .then(() => {
                     this.customerFormVisible = false;
-
-                    this.$message({
-                        type: 'success',
-                        message: 'Customer updated successfully'
-                    });
+                    this.$showSuccessMessage('customer.update.success');
                 })
-                .catch(() => {
-                    this.$message({
-                        type: 'error',
-                        message: 'Customer was not updated'
-                    });
-                })
+                .catch(() => this.$showErrorMessage('customer.update.error'));
         }
     }
 }
