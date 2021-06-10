@@ -4,7 +4,7 @@ Abc RMS is an admin panel to maintain customers and users. Features are as follo
 
 - Customers - Create, update, delete and search customers
 - Users - Create and update via CVS, search users
-- Authentication - supports for all devices
+- Api endpoints - supports for all devices
 
 ### Utilized Packages and frameworks 
 
@@ -17,7 +17,7 @@ Abc RMS is an admin panel to maintain customers and users. Features are as follo
 - Laravel framework - backend  
     - Laravel sanctum - for authentication 
     - Laravel swagger ui - for api documentation
-    - League CVS - reade csv
+    - League CVS - read csv
 
 ### How to set up ?
 
@@ -62,6 +62,14 @@ SANCTUM_STATEFUL_DOMAINS=127.0.0.1
 # create testing env
 cp .env.example .env.testing
 
+#replace following with appropriate values
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=abc
+DB_USERNAME=root
+DB_PASSWORD=
+
 # migrate and seed main database
 php artisan migrate --seed
 
@@ -74,6 +82,8 @@ npm install && npm run dev
 #serve the application
 php artisan serve
 ```
+
+You can access the system via `http://127.0.0.1:8000/`
 
 ### Testing
 
@@ -90,13 +100,12 @@ http://127.0.0.1:8000/api/documentation
 ![Login page](public/readme_images/login.png)
 
 - login using the following credentials
-    - admin
     ```bash
+    #admin
     email: admin@abc.com
     password: secret
-    ```
-    - non admin - by default this will give a validation error since only admin is given access
-    ```bash
+  
+    #non admin - by default this will give a validation error since only admin is authorized access
     email: user@abc.com
     password: secret
     ```
@@ -105,6 +114,8 @@ http://127.0.0.1:8000/api/documentation
 ![Users page](public/readme_images/users.png)
 
 - to update or create users, run the following command.
+- by default email will be considered row identifier when updating users via csv  
+- provide id of user in the csv to update email address
 
 ```bash
 php artisan admin:upload-users storage/csv/users.csv
