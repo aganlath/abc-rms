@@ -3699,7 +3699,7 @@ var routes = [{
     auth: true
   },
   component: function component() {
-    return __webpack_require__.e(/*! import() */ "resources_js_components_UserIndex_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../components/UserIndex */ "./resources/js/components/UserIndex.vue"));
+    return __webpack_require__.e(/*! import() */ "resources_js_components_User_UserIndex_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../components/User/UserIndex */ "./resources/js/components/User/UserIndex.vue"));
   },
   name: 'users'
 }];
@@ -3802,6 +3802,54 @@ var CustomerService = /*#__PURE__*/function () {
   }]);
 
   return CustomerService;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/js/services/UserService.js":
+/*!**********************************************!*\
+  !*** ./resources/js/services/UserService.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UserService)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var baseUrl = '/api/users';
+
+var UserService = /*#__PURE__*/function () {
+  function UserService() {
+    _classCallCheck(this, UserService);
+  }
+
+  _createClass(UserService, null, [{
+    key: "index",
+    value: function index(page, limit) {
+      var searchKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      return axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(baseUrl), {
+        params: {
+          page: page,
+          limit: limit,
+          search: searchKey
+        }
+      });
+    }
+  }]);
+
+  return UserService;
 }();
 
 
@@ -3969,13 +4017,12 @@ var fetchCustomers = /*#__PURE__*/function () {
           case 0:
             state = _ref.state, commit = _ref.commit;
             _context.next = 3;
-            return _services_CustomerService__WEBPACK_IMPORTED_MODULE_1__.default.index(state.page, state.limit, state.searchKey).then(function (response) {
+            return _services_CustomerService__WEBPACK_IMPORTED_MODULE_1__.default.index(state.nextPage, state.limit, state.searchKey).then(function (response) {
               var meta = response.data.meta;
               var customers = response.data.data;
               commit('setCustomers', customers);
-              commit('setCustomersPage', meta.current_page);
-              commit('setCustomersLastPage', meta.last_page);
-              return commit('setCustomersLoading', false);
+              commit('setCustomersNextPage', meta.current_page + 1);
+              return commit('setCustomersLastPage', meta.last_page);
             })["catch"](function (error) {
               throw error.response;
             });
@@ -4019,7 +4066,7 @@ var searchCustomers = /*#__PURE__*/function () {
 var resetAll = function resetAll(_ref5) {
   var commit = _ref5.commit;
   commit('resetCustomers');
-  commit('resetCustomersPage');
+  commit('resetCustomersNextPage');
   commit('resetCustomersLastPage');
 };
 var addCustomer = /*#__PURE__*/function () {
@@ -4144,25 +4191,21 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "setCustomers": () => (/* binding */ setCustomers),
-/* harmony export */   "setCustomersPage": () => (/* binding */ setCustomersPage),
+/* harmony export */   "setCustomersNextPage": () => (/* binding */ setCustomersNextPage),
 /* harmony export */   "setCustomersLastPage": () => (/* binding */ setCustomersLastPage),
-/* harmony export */   "setCustomersLoading": () => (/* binding */ setCustomersLoading),
 /* harmony export */   "setCustomersSearchKey": () => (/* binding */ setCustomersSearchKey),
 /* harmony export */   "resetCustomers": () => (/* binding */ resetCustomers),
-/* harmony export */   "resetCustomersPage": () => (/* binding */ resetCustomersPage),
+/* harmony export */   "resetCustomersNextPage": () => (/* binding */ resetCustomersNextPage),
 /* harmony export */   "resetCustomersLastPage": () => (/* binding */ resetCustomersLastPage)
 /* harmony export */ });
 var setCustomers = function setCustomers(state, customers) {
   return state.customers = state.customers.concat(customers);
 };
-var setCustomersPage = function setCustomersPage(state, page) {
-  return state.page = page + 1;
+var setCustomersNextPage = function setCustomersNextPage(state, page) {
+  return state.nextPage = page;
 };
 var setCustomersLastPage = function setCustomersLastPage(state, page) {
   return state.lastPage = page;
-};
-var setCustomersLoading = function setCustomersLoading(state, loading) {
-  return state.loading = loading;
 };
 var setCustomersSearchKey = function setCustomersSearchKey(state, searchKey) {
   return state.searchKey = searchKey;
@@ -4170,8 +4213,8 @@ var setCustomersSearchKey = function setCustomersSearchKey(state, searchKey) {
 var resetCustomers = function resetCustomers(state) {
   return state.customers = [];
 };
-var resetCustomersPage = function resetCustomersPage(state) {
-  return state.page = 1;
+var resetCustomersNextPage = function resetCustomersNextPage(state) {
+  return state.nextPage = 1;
 };
 var resetCustomersLastPage = function resetCustomersLastPage(state) {
   return state.lastPage = null;
@@ -4194,8 +4237,7 @@ __webpack_require__.r(__webpack_exports__);
   customers: [],
   lastPage: null,
   limit: 12,
-  loading: true,
-  page: 1,
+  nextPage: 1,
   searchKey: null
 });
 
@@ -4212,22 +4254,200 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _auth_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./auth/index */ "./resources/js/store/auth/index.js");
 /* harmony import */ var _customers_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./customers/index */ "./resources/js/store/customers/index.js");
+/* harmony import */ var _users_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./users/index */ "./resources/js/store/users/index.js");
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_2__.default.use(vuex__WEBPACK_IMPORTED_MODULE_3__.default);
-var store = new vuex__WEBPACK_IMPORTED_MODULE_3__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_3__.default.use(vuex__WEBPACK_IMPORTED_MODULE_4__.default);
+var store = new vuex__WEBPACK_IMPORTED_MODULE_4__.default.Store({
   modules: {
     auth: _auth_index__WEBPACK_IMPORTED_MODULE_0__.default,
-    customers: _customers_index__WEBPACK_IMPORTED_MODULE_1__.default
+    customers: _customers_index__WEBPACK_IMPORTED_MODULE_1__.default,
+    users: _users_index__WEBPACK_IMPORTED_MODULE_2__.default
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+
+/***/ }),
+
+/***/ "./resources/js/store/users/actions.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/users/actions.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "fetchUsers": () => (/* binding */ fetchUsers),
+/* harmony export */   "searchUsers": () => (/* binding */ searchUsers),
+/* harmony export */   "resetAll": () => (/* binding */ resetAll)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_UserService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/UserService */ "./resources/js/services/UserService.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var fetchUsers = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(_ref) {
+    var state, commit;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            state = _ref.state, commit = _ref.commit;
+            _context.next = 3;
+            return _services_UserService__WEBPACK_IMPORTED_MODULE_1__.default.index(state.nextPage, state.limit, state.searchKey).then(function (response) {
+              var meta = response.data.meta;
+              var users = response.data.data;
+              commit('setUsers', users);
+              commit('setUsersNextPage', meta.current_page + 1);
+              return commit('setUsersLastPage', meta.last_page);
+            })["catch"](function (error) {
+              throw error.response;
+            });
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function fetchUsers(_x) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+var searchUsers = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(_ref3, searchKey) {
+    var commit, dispatch;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            commit = _ref3.commit, dispatch = _ref3.dispatch;
+            dispatch('resetAll');
+            commit('setUsersSearchKey', searchKey);
+            return _context2.abrupt("return", dispatch('fetchUsers'));
+
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function searchUsers(_x2, _x3) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+var resetAll = function resetAll(_ref5) {
+  var commit = _ref5.commit;
+  commit('resetUsers');
+  commit('resetUsersNextPage');
+  commit('resetUsersLastPage');
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/users/index.js":
+/*!*******************************************!*\
+  !*** ./resources/js/store/users/index.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./resources/js/store/users/state.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/users/mutations.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions */ "./resources/js/store/users/actions.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: _state__WEBPACK_IMPORTED_MODULE_0__.default,
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_1__,
+  actions: _actions__WEBPACK_IMPORTED_MODULE_2__
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/users/mutations.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/users/mutations.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setUsers": () => (/* binding */ setUsers),
+/* harmony export */   "setUsersNextPage": () => (/* binding */ setUsersNextPage),
+/* harmony export */   "setUsersLastPage": () => (/* binding */ setUsersLastPage),
+/* harmony export */   "setUsersSearchKey": () => (/* binding */ setUsersSearchKey),
+/* harmony export */   "resetUsers": () => (/* binding */ resetUsers),
+/* harmony export */   "resetUsersNextPage": () => (/* binding */ resetUsersNextPage),
+/* harmony export */   "resetUsersLastPage": () => (/* binding */ resetUsersLastPage)
+/* harmony export */ });
+var setUsers = function setUsers(state, users) {
+  return state.users = state.users.concat(users);
+};
+var setUsersNextPage = function setUsersNextPage(state, page) {
+  return state.nextPage = page;
+};
+var setUsersLastPage = function setUsersLastPage(state, page) {
+  return state.lastPage = page;
+};
+var setUsersSearchKey = function setUsersSearchKey(state, searchKey) {
+  return state.searchKey = searchKey;
+};
+var resetUsers = function resetUsers(state) {
+  return state.users = [];
+};
+var resetUsersNextPage = function resetUsersNextPage(state) {
+  return state.nextPage = 1;
+};
+var resetUsersLastPage = function resetUsersLastPage(state) {
+  return state.lastPage = null;
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/users/state.js":
+/*!*******************************************!*\
+  !*** ./resources/js/store/users/state.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  users: [],
+  lastPage: null,
+  limit: 12,
+  nextPage: 1,
+  searchKey: null
+});
 
 /***/ }),
 
@@ -99805,7 +100025,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_Login_vue":1,"resources_js_components_Customer_CustomerIndex_vue":1,"resources_js_components_UserIndex_vue":1,"resources_js_components_MainHeader_vue":1,"resources_js_components_MainNav_vue":1,"resources_js_components_PageTitle_vue":1,"resources_js_components_Customer_CustomerTable_vue":1,"resources_js_components_Customer_CustomerForm_vue":1,"resources_js_components_Search_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_Login_vue":1,"resources_js_components_Customer_CustomerIndex_vue":1,"resources_js_components_User_UserIndex_vue":1,"resources_js_components_MainHeader_vue":1,"resources_js_components_MainNav_vue":1,"resources_js_components_PageTitle_vue":1,"resources_js_components_Customer_CustomerTable_vue":1,"resources_js_components_Customer_CustomerForm_vue":1,"resources_js_components_Search_vue":1,"resources_js_components_User_UserTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

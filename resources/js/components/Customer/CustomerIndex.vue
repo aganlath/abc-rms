@@ -1,6 +1,5 @@
 <script>
 import {mapActions} from "vuex";
-import {addCustomer} from "../../store/customers/actions";
 
 const CustomerTable = () => import('./CustomerTable');
 const CustomerForm = () => import('./CustomerForm');
@@ -51,7 +50,7 @@ export default {
 
 <template>
     <el-container>
-        <main-nav></main-nav>
+        <main-nav/>
 
         <el-main>
             <page-title />

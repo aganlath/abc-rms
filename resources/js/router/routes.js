@@ -17,7 +17,7 @@ const routes = [
         meta: {
             auth: true
         },
-        component: () => import('../components/UserIndex'),
+        component: () => import('../components/User/UserIndex'),
         name: 'users'
     }
 ];

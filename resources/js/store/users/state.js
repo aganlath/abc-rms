@@ -1,5 +1,5 @@
 export default {
-    customers: [],
+    users: [],
     lastPage: null,
     limit: 12,
     nextPage: 1,

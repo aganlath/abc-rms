@@ -43,17 +43,24 @@ var CustomerForm = function CustomerForm() {
       customerFormVisible: false
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
     customers: function customers(state) {
       return state.customers.customers;
     },
-    currentPage: function currentPage(state) {
-      return state.customers.page;
+    nextPage: function nextPage(state) {
+      return state.customers.nextPage;
     },
     lastPage: function lastPage(state) {
       return state.customers.lastPage;
+    },
+    searchKey: function searchKey(state) {
+      return state.customers.searchKey;
     }
-  })),
+  })), {}, {
+    isSearchActive: function isSearchActive() {
+      return !!this.searchKey;
+    }
+  }),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
     deleteCustomer: 'customers/deleteCustomer',
     editCustomer: 'customers/editCustomer',
@@ -75,7 +82,7 @@ var CustomerForm = function CustomerForm() {
               case 0:
                 _context.next = 2;
                 return _this.fetchCustomers().then(function () {
-                  if (_this.currentPage > _this.lastPage) {
+                  if (_this.nextPage > _this.lastPage) {
                     $state.complete();
                   } else {
                     $state.loaded();
@@ -332,14 +339,24 @@ var render = function() {
             ])
           }),
           _vm._v(" "),
-          _c("infinite-loading", {
-            attrs: {
-              slot: "append",
-              "force-use-infinite-wrapper": ".el-table__body-wrapper"
+          _c(
+            "infinite-loading",
+            {
+              attrs: {
+                slot: "append",
+                identifier: _vm.isSearchActive,
+                spinner: "circles",
+                "force-use-infinite-wrapper": ".el-table__body-wrapper"
+              },
+              on: { infinite: _vm.loadCustomers },
+              slot: "append"
             },
-            on: { infinite: _vm.loadCustomers },
-            slot: "append"
-          })
+            [
+              _c("div", { attrs: { slot: "no-more" }, slot: "no-more" }),
+              _vm._v(" "),
+              _c("div", { attrs: { slot: "no-results" }, slot: "no-results" })
+            ]
+          )
         ],
         1
       ),

@@ -1,15 +1,14 @@
 import CustomerService from "../../services/CustomerService";
 
 export const fetchCustomers = async ({state, commit}) => {
-    await CustomerService.index(state.page, state.limit, state.searchKey)
+    await CustomerService.index(state.nextPage, state.limit, state.searchKey)
         .then(response => {
             const { data : { meta: meta } } = response;
             const { data : { data: customers } } = response;
 
             commit('setCustomers', customers);
-            commit('setCustomersPage', meta.current_page);
-            commit('setCustomersLastPage', meta.last_page);
-            return commit('setCustomersLoading', false);
+            commit('setCustomersNextPage', meta.current_page + 1);
+            return commit('setCustomersLastPage', meta.last_page);
         })
         .catch(error => {
             throw error.response;
@@ -25,7 +24,7 @@ export const searchCustomers = async ({commit, dispatch}, searchKey) => {
 
 export const resetAll = ({commit}) => {
     commit('resetCustomers');
-    commit('resetCustomersPage');
+    commit('resetCustomersNextPage');
     commit('resetCustomersLastPage');
 }
 
