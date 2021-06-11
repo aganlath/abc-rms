@@ -189,9 +189,11 @@ var render = function() {
         on: { change: _vm.uploadFile }
       }),
       _vm._v(" "),
-      _c("span", { staticClass: "text-sm text-gray-900" }, [
+      _c("span", { staticClass: "pt-3 block text-xs text-gray-900" }, [
+        _vm._v("\n        Only csv files are valid. "),
+        _c("br"),
         _vm._v(
-          "\n        Only csv files are valid. Csv should contain first_name, last_name, email, is_admin and phone_numbers as headers.\n    "
+          "\n        Csv should contain first_name, last_name, email, is_admin and phone_numbers as headers.\n    "
         )
       ])
     ]

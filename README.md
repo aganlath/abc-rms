@@ -113,7 +113,7 @@ http://127.0.0.1:8000/api/documentation
   
 #### Users Index
 ![Users Page](public/readme_images/users.png)
-![Upload users](public/readme_images/users_upload.png)
+![Users Upload](public/readme_images/users_upload.png)
 
 - to update or create users, run the following command.
 - by default email will be considered row identifier when updating users via csv  
