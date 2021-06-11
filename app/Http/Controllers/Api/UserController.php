@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\CsvUploadFailed;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserIndexRequest;
+use App\Http\Requests\User\UserUploadCsvRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Artisan;
 
 class UserController extends Controller
 {
@@ -24,5 +28,14 @@ class UserController extends Controller
             ->paginate($request->get('limit', 10));
 
         return UserResource::collection($customers);
+    }
+
+    public function upload_csv(UserUploadCsvRequest $request): JsonResponse
+    {
+        $filePath = $request->file('csv_file')->storeAs('csv_uploads', $request->file('csv_file')->getClientOriginalName());
+
+        $exitCode = Artisan::call('admin:upload-users', ['path_to_csv' => storage_path('app/' . $filePath)]);
+
+        return response()->json($exitCode);
     }
 }

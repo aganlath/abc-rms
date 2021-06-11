@@ -3574,6 +3574,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.use((element_ui__WEBPACK_IMPORTED_MODUL
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use((vue_infinite_loading__WEBPACK_IMPORTED_MODULE_2___default()));
 vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$showErrorMessage = _config_helpers__WEBPACK_IMPORTED_MODULE_6__.showErrorMessage;
 vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$showSuccessMessage = _config_helpers__WEBPACK_IMPORTED_MODULE_6__.showSuccessMessage;
+vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$showError = _config_helpers__WEBPACK_IMPORTED_MODULE_6__.showError;
 new vue__WEBPACK_IMPORTED_MODULE_7__.default({
   router: _router_index__WEBPACK_IMPORTED_MODULE_3__.default,
   store: _store_index__WEBPACK_IMPORTED_MODULE_4__.default,
@@ -3647,6 +3648,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "createCommaSeparatedList": () => (/* binding */ createCommaSeparatedList),
 /* harmony export */   "showErrorMessage": () => (/* binding */ showErrorMessage),
+/* harmony export */   "showError": () => (/* binding */ showError),
 /* harmony export */   "showSuccessMessage": () => (/* binding */ showSuccessMessage)
 /* harmony export */ });
 /* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! element-ui */ "./node_modules/element-ui/lib/element-ui.common.js");
@@ -3659,6 +3661,9 @@ var createCommaSeparatedList = function createCommaSeparatedList(array, property
 };
 var showErrorMessage = function showErrorMessage(path) {
   element_ui__WEBPACK_IMPORTED_MODULE_0__.Message.error(getNotification(path));
+};
+var showError = function showError(message) {
+  element_ui__WEBPACK_IMPORTED_MODULE_0__.Message.error(message);
 };
 var showSuccessMessage = function showSuccessMessage(path) {
   element_ui__WEBPACK_IMPORTED_MODULE_0__.Message.success(getNotification(path));
@@ -3699,6 +3704,11 @@ __webpack_require__.r(__webpack_exports__);
     save: {
       title: 'Accounts added',
       message: 'Selected accounts added to :company_group_name.'
+    }
+  },
+  user: {
+    upload: {
+      success: 'Csv uploaded successfully'
     }
   }
 });
@@ -3917,6 +3927,17 @@ var UserService = /*#__PURE__*/function () {
           page: page,
           limit: limit,
           search: searchKey
+        }
+      });
+    }
+  }, {
+    key: "upload_csv",
+    value: function upload_csv(file) {
+      var formData = new FormData();
+      formData.append('csv_file', file);
+      return axios__WEBPACK_IMPORTED_MODULE_0___default().post("".concat(baseUrl, "/upload_csv"), formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       });
     }
@@ -4361,7 +4382,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "fetchUsers": () => (/* binding */ fetchUsers),
 /* harmony export */   "searchUsers": () => (/* binding */ searchUsers),
-/* harmony export */   "resetAll": () => (/* binding */ resetAll)
+/* harmony export */   "resetAll": () => (/* binding */ resetAll),
+/* harmony export */   "uploadCsv": () => (/* binding */ uploadCsv)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -4434,6 +4456,33 @@ var resetAll = function resetAll(_ref5) {
   commit('resetUsersNextPage');
   commit('resetUsersLastPage');
 };
+var uploadCsv = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(_ref6, file) {
+    var commit, dispatch;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            commit = _ref6.commit, dispatch = _ref6.dispatch;
+            _context3.next = 3;
+            return _services_UserService__WEBPACK_IMPORTED_MODULE_1__.default.upload_csv(file).then(function (response) {
+              return response;
+            })["catch"](function (error) {
+              throw error.response;
+            });
+
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function uploadCsv(_x4, _x5) {
+    return _ref7.apply(this, arguments);
+  };
+}();
 
 /***/ }),
 
@@ -100099,7 +100148,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_Login_vue":1,"resources_js_components_Customer_CustomerIndex_vue":1,"resources_js_components_User_UserIndex_vue":1,"resources_js_components_MainHeader_vue":1,"resources_js_components_MainNav_vue":1,"resources_js_components_PageTitle_vue":1,"resources_js_components_Customer_CustomerTable_vue":1,"resources_js_components_Customer_CustomerForm_vue":1,"resources_js_components_Search_vue":1,"resources_js_components_User_UserTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_Login_vue":1,"resources_js_components_Customer_CustomerIndex_vue":1,"resources_js_components_User_UserIndex_vue":1,"resources_js_components_MainHeader_vue":1,"resources_js_components_MainNav_vue":1,"resources_js_components_PageTitle_vue":1,"resources_js_components_Customer_CustomerTable_vue":1,"resources_js_components_Customer_CustomerForm_vue":1,"resources_js_components_Search_vue":1,"resources_js_components_User_UserTable_vue":1,"resources_js_components_User_UserCsvUpload_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

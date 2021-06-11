@@ -8,7 +8,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 import router from './router/index';
 import store from './store/index';
 import App from './App.vue';
-import { showErrorMessage, showSuccessMessage } from './config/helpers';
+import { showErrorMessage, showSuccessMessage, showError } from './config/helpers';
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
@@ -16,6 +16,7 @@ Vue.use(InfiniteLoading);
 
 Vue.prototype.$showErrorMessage = showErrorMessage;
 Vue.prototype.$showSuccessMessage = showSuccessMessage;
+Vue.prototype.$showError = showError;
 
 new Vue({
     router,

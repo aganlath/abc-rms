@@ -7,6 +7,9 @@ namespace Tests\Feature;
 use App\Models\PhoneNumber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -107,5 +110,21 @@ class UserControllerTest extends TestCase
             ->assertStatus(200);
 
         $this->assertCount(1, $search4['data']);
+    }
+
+    public function test_can_upload_users_via_csv(): void
+    {
+        Storage::fake();
+
+        $adminUser = User::factory()->admin()->create(['first_name' => 'Ashani']);
+
+        Artisan::shouldReceive('call')
+            ->with('admin:upload-users', ['path_to_csv' => 'csv_uploads/users.csv']);
+
+        $this->actingAs($adminUser)
+            ->postJson(route('api.users.upload_csv'), [
+                'csv_file' => UploadedFile::fake()->create('users.csv', 300,  'text/csv')
+            ])
+            ->assertStatus(200);
     }
 }
