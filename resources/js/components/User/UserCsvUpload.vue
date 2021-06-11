@@ -38,5 +38,9 @@ export default {
         append-to-body
         @close="$emit('close-user-upload')">
         <input type="file" ref="csv_file" name="file" @change="uploadFile"/>
+
+        <span class="text-sm text-gray-900">
+            Only csv files are valid. Csv should contain first_name, last_name, email, is_admin and phone_numbers as headers.
+        </span>
     </el-dialog>
 </template>
