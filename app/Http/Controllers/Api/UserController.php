@@ -32,9 +32,9 @@ class UserController extends Controller
 
     public function upload_csv(UserUploadCsvRequest $request): JsonResponse
     {
-        $filePath = $request->file('csv_file')->storeAs('csv_uploads', $request->file('csv_file')->name);
+        $filePath = $request->file('csv_file')->storeAs('csv_uploads', $request->file('csv_file')->getClientOriginalName());
 
-        $exitCode = Artisan::call('admin:upload-users', ['path_to_csv' => $filePath]);
+        $exitCode = Artisan::call('admin:upload-users', ['path_to_csv' => storage_path('app/' . $filePath)]);
 
         return response()->json($exitCode);
     }

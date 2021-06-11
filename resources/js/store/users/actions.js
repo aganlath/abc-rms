@@ -27,3 +27,13 @@ export const resetAll = ({commit}) => {
     commit('resetUsersNextPage');
     commit('resetUsersLastPage');
 }
+
+export const uploadCsv = async ({commit, dispatch}, file) => {
+    await UserService.upload_csv(file)
+        .then(response => {
+            return response;
+        })
+        .catch(error => {
+            throw error.response;
+        })
+};

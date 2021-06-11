@@ -17,7 +17,7 @@ class UserUploadCsvRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'csv_file' => 'required|mimetypes:text/csv'
+            'csv_file' => 'required|file'
         ];
     }
 }

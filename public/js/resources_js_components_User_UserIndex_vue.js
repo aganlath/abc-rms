@@ -36,9 +36,14 @@ var Search = function Search() {
   return __webpack_require__.e(/*! import() */ "resources_js_components_Search_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../Search */ "./resources/js/components/Search.vue"));
 };
 
+var UserCsvUpload = function UserCsvUpload() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_User_UserCsvUpload_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./UserCsvUpload */ "./resources/js/components/User/UserCsvUpload.vue"));
+};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UserIndex",
   components: {
+    UserCsvUpload: UserCsvUpload,
     UserTable: UserTable,
     MainNav: MainNav,
     PageTitle: PageTitle,
@@ -46,7 +51,8 @@ var Search = function Search() {
   },
   data: function data() {
     return {
-      search: null
+      search: null,
+      userUploadVisible: false
     };
   },
   methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
@@ -160,7 +166,32 @@ var render = function() {
             [
               _c(
                 "el-row",
-                [_c("search", { on: { search: _vm.searchUsers } })],
+                [
+                  _c("search", { on: { search: _vm.searchUsers } }),
+                  _vm._v(" "),
+                  _c(
+                    "el-col",
+                    {
+                      staticClass: "flex justify-end",
+                      attrs: { span: 2, offset: 18 }
+                    },
+                    [
+                      _c(
+                        "el-button",
+                        {
+                          attrs: { type: "primary", size: "mini" },
+                          on: {
+                            click: function($event) {
+                              _vm.userUploadVisible = true
+                            }
+                          }
+                        },
+                        [_vm._v("Upload users")]
+                      )
+                    ],
+                    1
+                  )
+                ],
                 1
               )
             ],
@@ -170,7 +201,16 @@ var render = function() {
           _c("user-table")
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("user-csv-upload", {
+        attrs: { "user-upload-visible": _vm.userUploadVisible },
+        on: {
+          "close-user-upload": function($event) {
+            _vm.userUploadVisible = false
+          }
+        }
+      })
     ],
     1
   )

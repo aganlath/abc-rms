@@ -1,4 +1,7 @@
 <script>
+import {mapActions} from "vuex";
+import {uploadCsv} from "../../store/users/actions";
+
 export default {
     name: "UserCsvUpload",
     props: {
@@ -9,14 +12,20 @@ export default {
     },
     data() {
         return {
-
+            fileList: []
         }
     },
-    computed: {
-
-    },
     methods: {
+        ...mapActions({
+            uploadCsv: 'users/uploadCsv',
+        }),
+        async uploadFile() {
+            await this.uploadCsv(this.$refs.csv_file.files[0])
+                .then(() => this.$showSuccessMessage('user.upload.success'))
+                .catch(error => this.$showError(error.data.message));
 
+            this.$emit('close-user-upload');
+        }
     }
 }
 </script>
@@ -25,21 +34,9 @@ export default {
     <el-dialog
         title="Upload users"
         :visible.sync="userUploadVisible"
-        width="30%"
+        width="21%"
         append-to-body
         @close="$emit('close-user-upload')">
-
-        <el-upload
-            class="upload-demo"
-            drag
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :file-list="fileList">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
-            <div class="el-upload__tip" slot="tip">csv files with a size less than</div>
-        </el-upload>
-
+        <input type="file" ref="csv_file" name="file" @change="uploadFile"/>
     </el-dialog>
 </template>

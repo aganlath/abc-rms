@@ -17,5 +17,10 @@ export default {
             title: 'Accounts added',
             message: 'Selected accounts added to :company_group_name.'
         }
+    },
+    user: {
+        upload: {
+            success: 'Csv uploaded successfully'
+        }
     }
 };
