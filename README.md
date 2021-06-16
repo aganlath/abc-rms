@@ -69,7 +69,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 
 #generate app key
-php artisan key:generate.
+php artisan key:generate
 
 # migrate and seed main database
 php artisan migrate --seed
