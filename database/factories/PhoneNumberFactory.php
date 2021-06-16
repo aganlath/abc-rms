@@ -16,7 +16,7 @@ class PhoneNumberFactory extends Factory
     public function definition(): array
     {
         return [
-            'phone_number' => $this->faker->phoneNumber,
+            'phone_number' => $this->faker->e164PhoneNumber,
             'resource_id' => $this->faker->randomDigit(),
             'resource_type' => $this->faker->randomElement([User::class, Customer::class])
         ];
