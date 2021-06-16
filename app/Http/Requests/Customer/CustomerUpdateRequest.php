@@ -24,7 +24,16 @@ class CustomerUpdateRequest extends FormRequest
                 'required',
                 Rule::unique('customers')->ignore($this->route('customer')),
             ],
-            'phone_numbers.*' => 'sometimes'
+            'phone_numbers.*' => 'sometimes|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:15'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'phone_numbers.*.regex' => 'The phone number is invalid',
+            'phone_numbers.*.min' => 'The phone number must be at least 10 characters',
+            'phone_numbers.*.max' => 'The phone number must not be greater than 15 characters',
         ];
     }
 }

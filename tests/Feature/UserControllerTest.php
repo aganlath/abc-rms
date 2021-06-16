@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -19,11 +20,11 @@ class UserControllerTest extends TestCase
     public function test_admin_can_fetch_users(): void
     {
         $adminUser = User::factory()->admin()->create();
+        Sanctum::actingAs($adminUser);
 
         User::factory()->count(5)->create();
 
-        $response = $this->actingAs($adminUser)
-            ->getJson(route('api.users.index'))
+        $response = $this->getJson(route('api.users.index'))
             ->assertStatus(200);
 
         $this->assertCount(5, $response['data']);
@@ -32,11 +33,11 @@ class UserControllerTest extends TestCase
     public function test_can_paginate_user_data(): void
     {
         $adminUser = User::factory()->admin()->create();
+        Sanctum::actingAs($adminUser);
 
         User::factory()->count(60)->create();
 
-        $page1Response = $this->actingAs($adminUser)
-            ->getJson(route('api.users.index') . '?page=1&limit=10')
+        $page1Response = $this->getJson(route('api.users.index') . '?page=1&limit=10')
             ->assertStatus(200);
 
         $this->assertCount(10, $page1Response['data']);
@@ -53,6 +54,7 @@ class UserControllerTest extends TestCase
     public function test_can_search_users(): void
     {
         $adminUser = User::factory()->admin()->create(['first_name' => 'Ashani']);
+        Sanctum::actingAs($adminUser);
 
         $phoneNumber1 = PhoneNumber::factory()->create([
             'phone_number' => '0779834535'
@@ -87,26 +89,22 @@ class UserControllerTest extends TestCase
             'email' => 'first@example.com'
         ]);
 
-        $search1 = $this->actingAs($adminUser)
-            ->getJson(route('api.users.index') . '?search=first')
+        $search1 = $this->getJson(route('api.users.index') . '?search=first')
             ->assertStatus(200);
 
         $this->assertCount(2, $search1['data']);
 
-        $search2 = $this->actingAs($adminUser)
-            ->getJson(route('api.users.index') . '?search=ashani')
+        $search2 = $this->getJson(route('api.users.index') . '?search=ashani')
             ->assertStatus(200);
 
         $this->assertCount(1, $search2['data']);
 
-        $search3 = $this->actingAs($adminUser)
-            ->getJson(route('api.users.index') . '?search=abc')
+        $search3 = $this->getJson(route('api.users.index') . '?search=abc')
             ->assertStatus(200);
 
         $this->assertCount(3, $search3['data']);
 
-        $search4 = $this->actingAs($adminUser)
-            ->getJson(route('api.users.index') . '?search=0779834535')
+        $search4 = $this->getJson(route('api.users.index') . '?search=0779834535')
             ->assertStatus(200);
 
         $this->assertCount(1, $search4['data']);
@@ -117,12 +115,12 @@ class UserControllerTest extends TestCase
         Storage::fake();
 
         $adminUser = User::factory()->admin()->create(['first_name' => 'Ashani']);
+        Sanctum::actingAs($adminUser);
 
         Artisan::shouldReceive('call')
-            ->with('admin:upload-users', ['path_to_csv' => 'csv_uploads/users.csv']);
+            ->with('admin:upload-users', ['path_to_csv' => storage_path('app/csv_uploads/users.csv')]);
 
-        $this->actingAs($adminUser)
-            ->postJson(route('api.users.upload_csv'), [
+        $this->postJson(route('api.users.upload_csv'), [
                 'csv_file' => UploadedFile::fake()->create('users.csv', 300,  'text/csv')
             ])
             ->assertStatus(200);
