@@ -42,9 +42,6 @@ valet secure
 # install composer
 composer install
 
-#generate app key
-php artisan key:generate.
-
 #create env
 cp .env.example .env
 
@@ -67,9 +64,12 @@ cp .env.example .env.testing
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=abc
+DB_DATABASE=abc_test
 DB_USERNAME=root
 DB_PASSWORD=
+
+#generate app key
+php artisan key:generate
 
 # migrate and seed main database
 php artisan migrate --seed
