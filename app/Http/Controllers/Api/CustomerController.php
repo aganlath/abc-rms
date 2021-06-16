@@ -45,13 +45,17 @@ class CustomerController extends Controller
     {
         $customer->update($request->only(['first_name', 'last_name', 'email']));
 
-        if ($request->has('phone_numbers')) {
-            $toBeDeleted = $customer->phoneNumbers()->pluck('phone_number')->diff($request->get('phone_numbers'));
-            $toBeAdded = collect($request->get('phone_numbers'))->diff($customer->phoneNumbers()->pluck('phone_number'));
-
-            $this->attachPhoneNumbers($customer, $toBeAdded->toArray());
-            $customer->phoneNumbers()->whereIn('phone_number', $toBeDeleted)->delete();
+        if (! $request->has('phone_numbers')) {
+            return new CustomerResource($customer);
         }
+
+        //get numbers that are no longer relevant, and detach from customer
+        $toBeDeleted = $customer->phoneNumbers()->pluck('phone_number')->diff($request->get('phone_numbers'));
+        $customer->phoneNumbers()->whereIn('phone_number', $toBeDeleted)->delete();
+
+        //get new numbers and attach to customer
+        $toBeAdded = collect($request->get('phone_numbers'))->diff($customer->phoneNumbers()->pluck('phone_number'));
+        $this->attachPhoneNumbers($customer, $toBeAdded->toArray());
 
         return new CustomerResource($customer);
     }
